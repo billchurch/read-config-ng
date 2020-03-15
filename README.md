@@ -252,7 +252,6 @@ Flow of the configuration loader:
 
 ### Gulp commands:
 
-- `gulp checkstyle` - runs jshint and jscsrc analysis
 - `gulp test` - runs tests
 - `gulp test --file test/loader.js` - runs single test file `./test/loader.js`
 - `gulp` - alias for `gulp jshint test`
