@@ -104,3 +104,7 @@ dist
 .tern-port
 
 /build
+lib/.DS_Store
+lib/load/.DS_Store
+lib/.DS_Store
+.DS_Store
