@@ -1,5 +1,5 @@
 # read-config-ng
-
+[![Travis build status](https://travis-ci.org/billchurch/read-config-ng.svg?branch=master)](https://travis-ci.org/billchurch/read-config-ng)
 ## About original package
 The original author, Paweł Mendelski <pawel.mendelski@coditorium.com>, has appeared to have abandonded this package. I took the last published version (1.6.0) and updated it to resolve some vulnerabilities in a few dependancies.
 
