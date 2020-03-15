@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect,
     path = require('path'),
-    properties = requireLib('load/parse/properties');
+    properties = require('~/lib/load/parse/properties');
 
 describe('properties.load test:', () => {
 

@@ -1,7 +1,7 @@
 'use strict';
 
-const libmodule = 'resolve/replace-variables',
-    replaceVariables = requireLib(libmodule).bind(null, '%'),
+const libmodule = '~/lib/resolve/replace-variables',
+    replaceVariables = require(libmodule).bind(null, '%'),
     expect = require('chai').expect,
     resolve = (config) => {
         return replaceVariables(config, config);
