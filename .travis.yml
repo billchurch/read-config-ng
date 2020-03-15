@@ -1,12 +1,12 @@
 language: node_js
 node_js:
-  - "5.0"
+  - "10.16.3"
 
 script: npm run ci
 after_success: npm run coveralls
 
 notifications:
   email:
-    - admin@coditorium.com
+    - wmchurch@gmail.com
 
 sudo: false
