@@ -1,7 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect,
-    yaml = requireLib('load/parse/yaml');
+    yaml = require('~/lib/load/parse/yaml');
 
 describe('YAML.parse module test:', () => {
 

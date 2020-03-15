@@ -1,7 +1,7 @@
 'use strict';
 
-const libmodule = 'load/merge-configs',
-    mergeConfigs = requireLib(libmodule),
+const libmodule = '~/lib/load/merge-configs',
+    mergeConfigs = require(libmodule),
     expect = require('chai').expect;
 
 describe(`${libmodule} test:`, () => {

@@ -1,7 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect,
-    properties = requireLib('load/parse/properties');
+    properties = require('~/lib/load/parse/properties');
 
 describe('properties.parse module test:', () => {
 

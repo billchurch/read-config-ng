@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect,
     path = require('path'),
-    json5 = requireLib('load/parse/json5');
+    json5 = require('~/lib/load/parse/json5');
 
 describe('Json5.load test:', () => {
 
