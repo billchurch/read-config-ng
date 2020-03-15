@@ -4,7 +4,7 @@ const pkg = require('./package'),
     gulp = require('gulp'),
     gulpif = require('gulp-if'),
     gutil = require('gulp-util'),
-    sync = require('gulp-sync')(gulp).sync,
+    // sync = require('gulp-sync')(gulp).sync,
     eslint = require('gulp-eslint'),
     mocha = require('gulp-mocha'),
     istanbul = require('gulp-istanbul'),
@@ -108,5 +108,5 @@ gulp.task('test-cov', (done) => {
         });
 });
 
-gulp.task('default', sync(['clean', 'lint', 'test']));
-gulp.task('ci', sync(['clean', 'lint', 'test-cov']));
+gulp.task('default', gulp.series(['clean', 'lint', 'test']));
+gulp.task('ci', gulp.series(['clean', 'lint', 'test-cov']));
