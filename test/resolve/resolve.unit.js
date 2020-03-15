@@ -1,7 +1,7 @@
 'use strict';
 
-const libmodule = 'resolve/index',
-    resolve = requireLib(libmodule),
+const libmodule = '~/lib/resolve/index',
+    resolve = require(libmodule),
     expect = require('chai').expect,
     opts = {
         replaceEnv: '%',

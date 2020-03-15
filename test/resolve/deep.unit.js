@@ -1,7 +1,7 @@
 'use strict';
 
-const libmodule = 'resolve/deep',
-    deep = requireLib(libmodule),
+const libmodule = '~/lib/resolve/deep',
+    deep = require(libmodule),
     expect = require('chai').expect;
 
 describe(`${libmodule} test:`, () => {

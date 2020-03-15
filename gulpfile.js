@@ -9,7 +9,6 @@ const pkg = require('./package'),
     mocha = require('gulp-mocha'),
     istanbul = require('gulp-istanbul'),
     mkdirp = require('mkdirp'),
-    path = require('path'),
     fs = require('fs'),
     del = require('del'),
     _ = require('lodash'),
@@ -36,9 +35,6 @@ function initTestMode() {
     global.testMode = 'unit';
     process.env.JUNIT_REPORT_PATH = 'build/test/results/report.xml';
     process.env.JUNIT_REPORT_STACK = true;
-    global.requireLib = function(libmodule) {
-        return require(path.resolve(__dirname, 'lib', libmodule));
-    };
 }
 
 gulp.task('clean', (done) => {

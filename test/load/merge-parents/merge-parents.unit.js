@@ -1,7 +1,7 @@
 'use strict';
 
-const libmodule = 'load/merge-parents',
-    mergeParents = requireLib(libmodule),
+const libmodule = '~/lib/load/merge-parents',
+    mergeParents = require(libmodule),
     path = require('path'),
     expect = require('chai').expect,
     config1 = path.resolve(__dirname, 'configs/config1.json'),

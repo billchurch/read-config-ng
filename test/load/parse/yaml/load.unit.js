@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect,
     path = require('path'),
-    yaml = requireLib('load/parse/yaml');
+    yaml = require('~/lib/load/parse/yaml');
 
 describe('YAML.load test:', () => {
 
