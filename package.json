@@ -51,7 +51,7 @@
     "mocha": "7.1.0",
     "mocha-jenkins-reporter": "~0.4.2",
     "sparkles": "^1.0.1",
-    "standard-version": "^7.1.0",
+    "standard-version": "^8.0.1",
     "wavy": "^1.0.4"
   },
   "engines": {
