@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.3](https://github.com/billchurch/read-config-ng/compare/v3.0.2...v3.0.3) (2021-08-12)
+
+
+### Bug Fixes
+
+* update development tools ([35357e7](https://github.com/billchurch/read-config-ng/commit/35357e767739c23568401697580c2c477b10014a))
+
 ### [3.0.2](https://github.com/billchurch/read-config-ng/compare/v3.0.1...v3.0.2) (2021-05-11)
 
 ### [3.0.1](https://github.com/billchurch/read-config-ng/compare/v3.0.1-0...v3.0.1) (2020-03-15)
