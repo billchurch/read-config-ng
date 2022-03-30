@@ -4,7 +4,7 @@
     "Paweł Mendelski <pawel.mendelski@coditorium.com>"
   ],
   "name": "read-config-ng",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Multi format configuration loader",
   "main": "index.js",
   "license": "MIT",
@@ -16,9 +16,7 @@
     "url": "https://github.com/billchurch/read-config-ng/issues"
   },
   "scripts": {
-    "test": "gulp lint test",
-    "ci": "gulp ci",
-    "coveralls": "cat build/test/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "test": "nyc mocha --reporter spec",
     "release": "standard-version",
     "clean": "gulp clean"
   },
@@ -38,19 +36,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "coveralls": "^3.0.9",
-    "del": "^5.1.0",
-    "gulp": "^4.0.2",
-    "gulp-eslint": "^6.0.0",
-    "gulp-if": "^3.0.0",
-    "gulp-istanbul": "^1.1.3",
-    "gulp-mocha": "^7.0.2",
-    "gulp-util": "~3.0.8",
-    "minimist": "^1.2.5",
-    "mkdirp": "~1.0.3",
-    "mocha": "^9.0.3",
-    "mocha-jenkins-reporter": "~0.4.2",
-    "sparkles": "^1.0.1",
+    "mocha": "^9.2.2",
+    "nyc": "^15.1.0",
     "standard-version": "^9.3.1",
     "wavy": "^1.0.4"
   },
