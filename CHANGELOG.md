@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [3.0.4](https://github.com/billchurch/read-config-ng/compare/v3.0.3...v3.0.4) (2022-03-30)
 
+### [3.0.4](https://github.com/billchurch/read-config-ng/compare/v3.0.3...v3.0.4) (2022-03-30)
+
 ### [3.0.3](https://github.com/billchurch/read-config-ng/compare/v3.0.2...v3.0.3) (2021-08-12)
 
 
