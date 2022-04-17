@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.5](https://github.com/billchurch/read-config-ng/compare/v3.0.4...v3.0.5) (2022-04-17)
+
+
+### Bug Fixes
+
+* upgrade async to 2.6.4 fixes [#17](https://github.com/billchurch/read-config-ng/issues/17) ([bdb2b95](https://github.com/billchurch/read-config-ng/commit/bdb2b95090d56bbdc1fede5e3918b2aeba6343a5))
+
 ### [3.0.4](https://github.com/billchurch/read-config-ng/compare/v3.0.3...v3.0.4) (2022-03-30)
 
 ### [3.0.3](https://github.com/billchurch/read-config-ng/compare/v3.0.2...v3.0.3) (2021-08-12)
