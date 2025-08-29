@@ -1,11 +1,14 @@
 # read-config-ng
 [![NPM](https://img.shields.io/npm/v/read-config-ng)](https://www.npmjs.com/package/read-config-ng)
 <!-- [![Coverage Status](https://coveralls.io/repos/github/billchurch/read-config-ng/badge.svg)](https://coveralls.io/github/billchurch/read-config-ng) -->
+
 ## About original package
-The original author, Paweł Mendelski <pawel.mendelski@coditorium.com>, has appeared to have abandonded this package. I took the last published version (1.6.0) and updated it to resolve some vulnerabilities in a few dependancies.
+The original author, Paweł Mendelski <pawel.mendelski@coditorium.com>, has appeared to have abandoned this package. I took the last published version (1.6.0) and updated it to resolve some vulnerabilities in a few dependencies.
+
+**Current Status**: Fully migrated to TypeScript with modern async/await support, Vitest test runner, and Node.js 22+ requirements.
 
 ## Summary
-Multi format configuration loader for Node.js.
+Multi format configuration loader for Node.js with TypeScript support.
 Features:
 
 - Environmental variables replacement
@@ -13,28 +16,66 @@ Features:
 - Overriding configuration properties via environmental variables
 - Variable default values
 - Hierarchical configurations
-- Supported format:
+- Supported formats:
   - [JSON5](http://json5.org/)
   - [YAML](http://en.wikipedia.org/wiki/YAML)
   - [Properties](http://en.wikipedia.org/wiki/.properties)
+- Modern Promise-based API with async/await support
+- Full TypeScript support with type definitions
+- Node.js 22+ compatibility
+
+## Requirements
+
+- Node.js 22.0.0 or higher
+
+## Installation
+
+```bash
+npm install read-config-ng
+```
 
 ## How to use
+
+### Modern ESM/TypeScript Usage (Recommended)
+
+```typescript
+import readConfig from 'read-config-ng';
+// or
+import { readConfig } from 'read-config-ng';
+
+// Modern async/await API (default)
+const config = await readConfig('/path/to/config.json');
+console.log(config);
+```
+
+### CommonJS Usage
+
+```javascript
+const readConfig = require('read-config-ng');
+
+// Async with await
+const config = await readConfig('/path/to/config.json');
+
+// Or with .then()
+readConfig('/path/to/config.json')
+  .then(config => console.log(config));
+```
 
 ### Environment variable replacement
 
 /tmp/config.json:
-``` javascript
-{ env1: "%{ENV_VAR1}", env2: "%{ENV_VAR2|def}" }
+```json
+{ "env1": "%{ENV_VAR1}", "env2": "%{ENV_VAR2|def}" }
 ```
-index.js:
-``` javascript
-var readConfig = require('read-config'),
-    config = readConfig('/tmp/config.json');
 
+```typescript
+import readConfig from 'read-config-ng';
+
+const config = await readConfig('/tmp/config.json');
 console.log(config);
 
-//  $ ENV_VAR1=abc node index.js
-//  { env1: 'abc', env2: 'def' }
+// $ ENV_VAR1=abc node index.js  
+// { env1: 'abc', env2: 'def' }
 ```
 
 - It is possible to change `%` to any other character. Just use `replaceEnv` configuration option.
@@ -43,26 +84,25 @@ console.log(config);
 ### Configuration overriding with system variables
 
 /tmp/config.json:
-``` javascript
+```json
 {
-    rootProp: "rootProp",
-    objProp: {
-		x: 'X'
-	}
+    "rootProp": "rootProp",
+    "objProp": {
+        "x": "X"
+    }
 }
 ```
-index.js:
-``` javascript
-var readConfig = require('read-config'),
-    config = readConfig('/tmp/config.json', { override: true });
+```typescript
+import readConfig from 'read-config-ng';
 
+const config = await readConfig('/tmp/config.json', { override: true });
 console.log(config);
 
-//  $ ENV_VAR1=abc node index.js
-//  { rootProp: 'rootProp', objProp: { x: 'X'} }
+// $ node index.js
+// { rootProp: 'rootProp', objProp: { x: 'X'} }
 
-//  $ CONFIG_objProp_x=abc node index.js
-//  { rootProp: 'rootProp', objProp: { x: 'abc'} }
+// $ CONFIG_objProp_x=abc node index.js  
+// { rootProp: 'rootProp', objProp: { x: 'abc'} }
 ```
 
 - It is possible to change `CONFIG` to any other character. Just use `override` configuration option.
@@ -71,29 +111,28 @@ console.log(config);
 ### Configuration variable replacement
 
 /tmp/config.json:
-``` javascript
+```json
 {
-    text1: "def",
-    text2: "abc-@{text1}-ghi"
-    number1: 1,
-    number2: "@{number1}",
-    boolean1: true,
-    boolean2: "@{boolean1}",
-    null1: null,
-    null2: "@{null1}",
-	obj1: {
-		x: 'X',
-		y: '@{./x}', // same as @{obj1.x}
-		z: '@{../text1}' // same as @{text1}
-	},
-	obj2: "@{obj1}"
+    "text1": "def",
+    "text2": "abc-@{text1}-ghi",
+    "number1": 1,
+    "number2": "@{number1}",
+    "boolean1": true,
+    "boolean2": "@{boolean1}",
+    "null1": null,
+    "null2": "@{null1}",
+    "obj1": {
+        "x": "X",
+        "y": "@{./x}",
+        "z": "@{../text1}"
+    },
+    "obj2": "@{obj1}"
 }
 ```
-index.js:
-``` javascript
-var readConfig = require('read-config'),
-    config = readConfig('/tmp/config.json');
+```typescript
+import readConfig from 'read-config-ng';
 
+const config = await readConfig('/tmp/config.json');
 console.log(config);
 
 //  $ node index.js
@@ -126,28 +165,27 @@ console.log(config);
 ### Configuration hierarchy
 
 /tmp/config-1.json:
-``` javascript
+```json
 {
-    a: "a",
-    b: "b",
-    arr: [1, 2, 3]
+    "a": "a",
+    "b": "b",
+    "arr": [1, 2, 3]
 }
 ```
 /tmp/config-2.json:
-``` javascript
+```json
 {
-    __parent: "/tmp/config-1.json",
-    // same as: __parent: "./config-1.json",
-    b: "bb",
-    c: "aa",
-    arr: []
+    "__parent": "/tmp/config-1.json",
+    "b": "bb",
+    "c": "aa",
+    "arr": []
 }
 ```
-index.js:
-``` javascript
-var readConfig = require('read-config'),
-    config = readConfig('/tmp/config-2.json');
 
+```typescript
+import readConfig from 'read-config-ng';
+
+const config = await readConfig('/tmp/config-2.json');
 console.log(config);
 
 //  $ node index.js
@@ -163,27 +201,27 @@ console.log(config);
 ### Hierarchy and basedir
 
 /tmp/config-1.json:
-``` javascript
+```json
 {
-    a: "a",
-    b: "b",
-    arr: [1, 2, 3]
+    "a": "a",
+    "b": "b",
+    "arr": [1, 2, 3]
 }
 ```
 /home/xxx/config-2.json:
-``` javascript
+```json
 {
-    __parent: "config-1", // no directory & extension specified
-    b: "bb",
-    c: "aa",
-    arr: []
+    "__parent": "config-1",
+    "b": "bb",
+    "c": "aa",
+    "arr": []
 }
 ```
-index.js:
-``` javascript
-var readConfig = require('read-config'),
-    config = readConfig('/tmp/config-2.json');
 
+```typescript
+import readConfig from 'read-config-ng';
+
+const config = await readConfig('/home/xxx/config-2.json');
 console.log(config);
 
 //  $ node index.js
@@ -200,7 +238,7 @@ console.log(config);
 Using YAML representation lookout for special characters like: '%' and '@'.
 
 /tmp/config.yml:
-``` javascript
+```yaml
 a: "@{LOCAL_VAR}"
 b: "%{ENV_VAR}"
 c: No quotes needed!
@@ -210,11 +248,11 @@ c: No quotes needed!
 
 ### Functions
 
-- **readConfig(paths, [opts])** - Alias for `readConfig.sync(paths, [opts])`.
+- **readConfig(paths, [opts])** - Modern Promise-based async API (default export).
 - **readConfig.sync(paths, [opts])** - Loads configuration file synchronously.
-- **readConfig.async(paths, [opts], callback)** - Loads configuration file asynchronously.
+- **readConfig.callback(paths, [opts], callback)** - Legacy callback-based asynchronous API.
 
-All json files are loaded using [JSON5](https://www.npmjs.com/package/json5) library. It means you can add comments, and skip quotes in your config files - thank you json5;).
+All JSON files are loaded using [JSON5](https://www.npmjs.com/package/json5) library with full TypeScript support. You can add comments and skip quotes in your config files.
 
 ### Parameters
 
@@ -229,14 +267,15 @@ All json files are loaded using [JSON5](https://www.npmjs.com/package/json5) lib
     - **skipUnresolved** - (Boolean, default: false) `true` blocks error throwing on unresolved variables.
 
 Default **opts** values:
-``` javascript
+```typescript
 {
     parentField: "__parent",
     optional: [],
-    basedir: null,
+    basedir: ".",
     replaceEnv: "%",
     replaceLocal: "@",
-    skipUnresolved: false
+    skipUnresolved: false,
+    freeze: false
 }
 ```
 
@@ -250,17 +289,20 @@ Flow of the configuration loader:
 4. Resolve environment variables
 5. Resolve local variables
 
-### Gulp commands:
+## Development Commands
 
-- `gulp test` - runs tests
-- `gulp test --file test/loader.js` - runs single test file `./test/loader.js`
-- `gulp` - alias for `gulp jshint test`
-- `gulp test-cov` - runs instrumented tests, generates reports to `./build/test`
-- `gulp test-cov --file test/loader.js` - runs single instrumented test file `./test/loader.js`
-- `gulp clean` - removes `./build` folder
-- `gulp ci` - alias for `gulp clean checkstyle test-cov`
+### Testing
+- `npm test` - Run tests using Vitest
+- `npm run test:watch` - Run tests in watch mode for development
+- `npm run test:coverage` - Run tests with Vitest coverage reporting
+- `npm run test:ci` - Run tests with minimal output for CI
 
-### NPM commands:
+### Build & Type Checking
+- `npm run build` - Compile TypeScript to JavaScript in dist/
+- `npm run build:watch` - Compile TypeScript in watch mode
+- `npm run typecheck` - Type check without emitting files
+- `npm run clean` - Clean dist and coverage directories
 
-- `npm test` - alias for `gulp test`
-- `npm run ci` - alias for `gulp ci`
+### Linting
+- `npm run lint` - Lint source code with ESLint
+- `npm run lint:fix` - Auto-fix linting issues
