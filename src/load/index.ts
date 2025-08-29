@@ -1,6 +1,6 @@
-import { ConfigObject, ConfigOptions } from '../types';
-import { mergeParents, mergeParentsSync } from './merge-parents';
-import { mergeConfigs } from './merge-configs';
+import { ConfigObject, ConfigOptions } from '../types.js';
+import { mergeParents, mergeParentsSync } from './merge-parents.js';
+import { mergeConfigs } from './merge-configs.js';
 
 /**
  * Load configuration files asynchronously
@@ -39,10 +39,10 @@ export function loadSync(
 }
 
 // Export individual functions for direct use
-export { mergeConfigs } from './merge-configs';
-export { mergeParents, mergeParentsSync } from './merge-parents';
-export { resolvePath, resolvePathSync } from './resolve-path';
-export * from './parse';
+export { mergeConfigs } from './merge-configs.js';
+export { mergeParents, mergeParentsSync } from './merge-parents.js';
+export { resolvePath, resolvePathSync } from './resolve-path.js';
+export * from './parse/index.js';
 
 // Legacy exports for backward compatibility
 export const async = loadAsync;

@@ -1,8 +1,8 @@
 import * as path from 'path';
-import { Parser, ConfigObject } from '../../types';
-import json5Parser from './json5';
-import yamlParser from './yaml';
-import propertiesParser from './properties';
+import { Parser, ConfigObject } from '../../types.js';
+import json5Parser from './json5.js';
+import yamlParser from './yaml.js';
+import propertiesParser from './properties.js';
 
 /**
  * Map of file extensions to their parsers

@@ -1,8 +1,9 @@
-import { merge } from 'lodash';
-import { ConfigObject, ConfigOptions, ConfigCallback } from './types';
-import { ReadConfigError } from './read-config-error';
-import { loadAsync, loadSync } from './load';
-import { resolve } from './resolve';
+import * as _ from 'lodash';
+import { accessSync } from 'fs';
+import { ConfigObject, ConfigOptions, ConfigCallback } from './types.js';
+import { ReadConfigError } from './read-config-error.js';
+import { loadAsync, loadSync } from './load/index.js';
+import { resolve } from './resolve/index.js';
 
 /**
  * Default configuration options
@@ -125,7 +126,7 @@ function validateParams(
     const basedirs = Array.isArray(opts.basedir) ? opts.basedir : [opts.basedir];
     for (const basedir of basedirs) {
       try {
-        require('fs').accessSync(basedir);
+        accessSync(basedir);
       } catch {
         return ReadConfigError.validationError(
           `Base directory not found: ${basedir}`
@@ -141,7 +142,7 @@ function validateParams(
  * Merge user options with defaults
  */
 function mergeOptions(opts: ConfigOptions): ConfigOptions {
-  return merge({}, DEFAULT_OPTIONS, opts) as ConfigOptions;
+  return _.merge({}, DEFAULT_OPTIONS, opts) as ConfigOptions;
 }
 
 // Named exports for modern usage
@@ -153,8 +154,8 @@ export {
 };
 
 // Additional exports
-export { ConfigObject, ConfigOptions, ConfigCallback } from './types';
-export { ReadConfigError } from './read-config-error';
+export { ConfigObject, ConfigOptions, ConfigCallback } from './types.js';
+export { ReadConfigError } from './read-config-error.js';
 
 // Create a namespace for backward compatibility
 const readConfigNamespace = Object.assign(readConfig, {

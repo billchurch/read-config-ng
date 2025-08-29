@@ -1,7 +1,7 @@
-import { ConfigObject, ConfigOptions } from '../types';
-import { ReadConfigError } from '../read-config-error';
-import { replaceVariables } from './replace-variables';
-import { override } from './override';
+import { ConfigObject, ConfigOptions } from '../types.js';
+import { ReadConfigError } from '../read-config-error.js';
+import { replaceVariables } from './replace-variables.js';
+import { override } from './override.js';
 
 /**
  * Resolve configuration by applying overrides and variable replacements
@@ -112,9 +112,9 @@ function deepFreeze(obj: ConfigObject): ConfigObject {
 }
 
 // Export individual functions for direct use
-export { override } from './override';
-export { replaceVariables } from './replace-variables';
-export { pick, put } from './deep';
-export { resolveValue } from './resolve-expression';
+export { override } from './override.js';
+export { replaceVariables } from './replace-variables.js';
+export { pick, put } from './deep.js';
+export { resolveValue } from './resolve-expression.js';
 
 export default resolve;

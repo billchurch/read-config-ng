@@ -1,6 +1,6 @@
 import * as path from 'path';
-import { promises as fs } from 'fs';
-import { extnames } from './parse';
+import { promises as fs, accessSync } from 'fs';
+import { extnames } from './parse/index.js';
 
 /**
  * Check if a file exists
@@ -19,7 +19,7 @@ async function fileExists(filepath: string): Promise<boolean> {
  */
 function fileExistsSync(filepath: string): boolean {
   try {
-    require('fs').accessSync(filepath);
+    accessSync(filepath);
     return true;
   } catch {
     return false;

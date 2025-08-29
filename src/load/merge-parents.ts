@@ -1,9 +1,9 @@
 import * as path from 'path';
-import { ConfigObject, ConfigOptions } from '../types';
-import { ReadConfigError } from '../read-config-error';
-import { mergeConfigs } from './merge-configs';
-import { load, loadSync } from './parse';
-import { resolvePath, resolvePathSync } from './resolve-path';
+import { ConfigObject, ConfigOptions } from '../types.js';
+import { ReadConfigError } from '../read-config-error.js';
+import { mergeConfigs } from './merge-configs.js';
+import { load, loadSync } from './parse/index.js';
+import { resolvePath, resolvePathSync } from './resolve-path.js';
 
 /**
  * Merge a configuration file with its parent hierarchy asynchronously

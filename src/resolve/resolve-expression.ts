@@ -1,7 +1,7 @@
 import * as path from 'path';
-import { pick } from './deep';
-import { ReadConfigError } from '../read-config-error';
-import { ConfigObject, ConfigValue } from '../types';
+import { pick } from './deep.js';
+import { ReadConfigError } from '../read-config-error.js';
+import { ConfigObject, ConfigValue } from '../types.js';
 
 interface ResolveOptions {
   skipUnresolved?: boolean;

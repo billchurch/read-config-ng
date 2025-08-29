@@ -7,9 +7,8 @@
 import {
   readConfig,
   readConfigSync,
-  readConfigCallback,
-  ReadConfigError
-} from './read-config';
+  readConfigCallback
+} from './read-config.js';
 
 // Default export is the async function (modern API)
 export default readConfig;
@@ -32,24 +31,9 @@ export {
   ConfigValue,
   ConfigArray,
   Parser
-} from './types';
+} from './types.js';
 
 // Error export
-export { ReadConfigError } from './read-config-error';
+export { ReadConfigError } from './read-config-error.js';
 
-// Create a namespace that mimics the old API for backward compatibility
-const readConfigCompat = Object.assign(readConfig, {
-  async: readConfig,
-  sync: readConfigSync,
-  callback: readConfigCallback,
-  default: readConfig,
-  ReadConfigError
-});
 
-// CommonJS compatibility
-module.exports = readConfigCompat;
-module.exports.default = readConfig;
-module.exports.async = readConfig;
-module.exports.sync = readConfigSync;
-module.exports.callback = readConfigCallback;
-module.exports.ReadConfigError = ReadConfigError;
