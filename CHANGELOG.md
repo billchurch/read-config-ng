@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/billchurch/read-config-ng/compare/v3.0.8...v4.0.0) (2025-08-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Migrated codebase from JavaScript to TypeScript with full async/await support
+
+### Features
+
+* complete TypeScript migration with async/await support ([65f7df4](https://github.com/billchurch/read-config-ng/commit/65f7df403d90c84b7e1bbb722957eec705946b48)), closes [#21](https://github.com/billchurch/read-config-ng/issues/21)
+
 ## [3.0.8](https://github.com/billchurch/read-config-ng/compare/v3.0.7...v3.0.8) (2025-08-29)
 
 
