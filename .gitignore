@@ -111,3 +111,6 @@ lib/.DS_Store
 
 # Claude Code configuration
 CLAUDE.md
+.claude/settings.local.json
+
+.claude/
