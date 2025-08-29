@@ -4,7 +4,7 @@
     "Paweł Mendelski <pawel.mendelski@coditorium.com>"
   ],
   "name": "read-config-ng",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Multi format configuration loader",
   "type": "module",
   "main": "dist/index.js",
