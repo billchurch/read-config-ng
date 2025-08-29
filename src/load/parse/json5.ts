@@ -1,8 +1,8 @@
-import { promises as fs } from 'fs';
+import { promises as fs, readFileSync } from 'fs';
 import * as path from 'path';
 import * as json5 from 'json5';
-import { Parser, ConfigObject } from '../../types';
-import { ReadConfigError } from '../../read-config-error';
+import { Parser, ConfigObject } from '../../types.js';
+import { ReadConfigError } from '../../read-config-error.js';
 
 /**
  * JSON5 parser implementation
@@ -30,7 +30,7 @@ export const parser: Parser = {
   loadSync(filePath: string): ConfigObject {
     const absolutePath = path.resolve(filePath);
     try {
-      const content = require('fs').readFileSync(absolutePath, 'utf8');
+      const content = readFileSync(absolutePath, 'utf8');
       return this.parseSync(content);
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'ENOENT') {

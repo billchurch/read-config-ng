@@ -1,9 +1,11 @@
-import { promises as fs } from 'fs';
+import { promises as fs, readFileSync } from 'fs';
 import * as path from 'path';
-import { Parser, ConfigObject } from '../../types';
-import { ReadConfigError } from '../../read-config-error';
+import { Parser, ConfigObject } from '../../types.js';
+import { ReadConfigError } from '../../read-config-error.js';
 
-// Properties library doesn't have official types
+// Properties library doesn't have official types and is CommonJS
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 const properties = require('properties');
 
 /**
@@ -32,7 +34,7 @@ export const parser: Parser = {
   loadSync(filePath: string): ConfigObject {
     const absolutePath = path.resolve(filePath);
     try {
-      const content = require('fs').readFileSync(absolutePath, 'utf8');
+      const content = readFileSync(absolutePath, 'utf8');
       return this.parseSync(content);
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'ENOENT') {

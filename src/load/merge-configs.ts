@@ -1,5 +1,5 @@
-import { mergeWith } from 'lodash';
-import { ConfigObject, ConfigValue } from '../types';
+import * as _ from 'lodash';
+import { ConfigObject, ConfigValue } from '../types.js';
 
 /**
  * Merge multiple configuration objects
@@ -18,7 +18,7 @@ export function mergeConfigs(configs: ConfigObject[]): ConfigObject {
     return undefined; // Use default merging for other types
   };
   
-  return mergeWith({}, ...configs, customizer) as ConfigObject;
+  return _.mergeWith({}, ...configs, customizer) as ConfigObject;
 }
 
 export default mergeConfigs;

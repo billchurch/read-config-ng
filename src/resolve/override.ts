@@ -1,5 +1,5 @@
-import { ConfigObject, ConfigValue } from '../types';
-import { put } from './deep';
+import { ConfigObject, ConfigValue } from '../types.js';
+import { put } from './deep.js';
 
 const PROPERTY_SEPARATOR = '_';
 

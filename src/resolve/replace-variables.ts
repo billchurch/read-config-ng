@@ -1,5 +1,5 @@
-import { ConfigObject, ConfigValue } from '../types';
-import { resolveValue } from './resolve-expression';
+import { ConfigObject, ConfigValue } from '../types.js';
+import { resolveValue } from './resolve-expression.js';
 
 interface ResolveOptions {
   skipUnresolved?: boolean;
