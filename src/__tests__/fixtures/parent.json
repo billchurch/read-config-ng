@@ -1,0 +1,9 @@
+{
+  "parent": true,
+  "overridden": "parent-value",
+  "settings": {
+    "debug": false,
+    "port": 3000,
+    "host": "localhost"
+  }
+}

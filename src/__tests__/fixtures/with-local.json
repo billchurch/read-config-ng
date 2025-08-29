@@ -1,0 +1,14 @@
+{
+  "base": {
+    "url": "https://example.com",
+    "timeout": 5000
+  },
+  "endpoints": {
+    "api": "@{base.url}/api",
+    "auth": "@{base.url}/auth",
+    "timeout": "@{base.timeout}"
+  },
+  "nested": {
+    "value": "@{endpoints.api}/v1"
+  }
+}

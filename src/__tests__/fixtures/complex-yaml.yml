@@ -1,0 +1,71 @@
+server:
+  host: "%{SERVER_HOST|localhost}"
+  port: 8080
+  ssl:
+    enabled: true
+    cert_path: "/etc/ssl/certs/server.crt"
+    key_path: "/etc/ssl/private/server.key"
+
+database:
+  primary:
+    host: "%{DB_PRIMARY_HOST|db1.example.com}"
+    port: 5432
+    name: "%{DB_NAME|myapp}"
+    username: "%{DB_USER|admin}"
+    password: "%{DB_PASSWORD|default_db_pass}"
+    pool:
+      min: 5
+      max: 20
+      idle_timeout: 30000
+  replica:
+    host: "%{DB_REPLICA_HOST|@{database.primary.host}}"
+    port: "@{database.primary.port}"
+    name: "@{database.primary.name}"
+    readonly: true
+
+cache:
+  redis:
+    enabled: true
+    host: "%{REDIS_HOST|localhost}"
+    port: 6379
+    password: "%{REDIS_PASSWORD|default_redis_pass}"
+    database: 0
+    ttl: 3600
+
+logging:
+  level: "%{LOG_LEVEL|info}"
+  format: json
+  outputs:
+    - type: console
+    - type: file
+      path: "/var/log/@{app.name}.log"
+      rotation: daily
+      max_size: 100MB
+
+features:
+  authentication: true
+  api_versioning: true
+  rate_limiting:
+    enabled: true
+    window: 60
+    max_requests: 1000
+  monitoring:
+    metrics: true
+    health_check: true
+    profiling: "%{ENABLE_PROFILING|false}"
+
+app:
+  name: "complex-app"
+  version: "1.0.0"
+  environment: "%{NODE_ENV|development}"
+  debug: "@{app.environment === 'development'}"
+
+external_services:
+  payment_gateway:
+    url: "%{PAYMENT_GATEWAY_URL}"
+    api_key: "%{PAYMENT_API_KEY}"
+    timeout: 30000
+  email_service:
+    provider: "%{EMAIL_PROVIDER|sendgrid}"
+    api_key: "%{EMAIL_API_KEY}"
+    from_address: "noreply@%{DOMAIN|example.com}"

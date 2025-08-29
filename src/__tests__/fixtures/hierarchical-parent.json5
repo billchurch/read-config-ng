@@ -1,0 +1,56 @@
+{
+  // Base configuration for all environments
+  app: {
+    name: "hierarchical-app",
+    version: "3.0.0",
+    description: "Application with hierarchical configuration"
+  },
+  
+  server: {
+    host: "0.0.0.0",
+    port: 8000,
+    timeout: 30000,
+    cors: {
+      enabled: true,
+      origins: ["http://localhost:3000"],
+      credentials: true
+    }
+  },
+  
+  database: {
+    driver: "postgresql",
+    host: "%{DATABASE_HOST|localhost}",
+    port: 5432,
+    ssl: false,
+    pool: {
+      min: 1,
+      max: 5,
+      timeout: 10000
+    }
+  },
+  
+  logging: {
+    level: "info",
+    format: "json",
+    destinations: ["console"]
+  },
+  
+  security: {
+    bcrypt_rounds: 12,
+    session: {
+      secret: "%{SESSION_SECRET|default-secret}",
+      cookie: {
+        secure: false,
+        httpOnly: true,
+        maxAge: 86400000 // 24 hours
+      }
+    }
+  },
+  
+  features: {
+    user_registration: true,
+    password_reset: true,
+    email_verification: false,
+    two_factor_auth: false
+  }
+}

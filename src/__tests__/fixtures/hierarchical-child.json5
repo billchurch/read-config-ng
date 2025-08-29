@@ -1,0 +1,122 @@
+{
+  // Production environment configuration extending base
+  __parent: "./hierarchical-parent.json5",
+  
+  server: {
+    // Override base server settings for production
+    host: "%{PRODUCTION_HOST|0.0.0.0}",
+    port: "%{PORT|3000}",
+    ssl: {
+      enabled: true,
+      cert: "%{SSL_CERT_PATH}",
+      key: "%{SSL_KEY_PATH}"
+    },
+    cors: {
+      origins: [
+        "https://%{DOMAIN|example.com}",
+        "https://www.%{DOMAIN|example.com}",
+        "https://api.%{DOMAIN|example.com}"
+      ]
+    }
+  },
+  
+  database: {
+    // Production database settings
+    host: "%{DATABASE_HOST|prod-db.example.com}",
+    port: "%{DATABASE_PORT|5432}",
+    name: "%{DATABASE_NAME|@{app.name}_prod}",
+    username: "%{DATABASE_USER|app_user}",
+    password: "%{DATABASE_PASSWORD}",
+    ssl: true,
+    pool: {
+      min: 5,
+      max: 20,
+      timeout: 5000
+    }
+  },
+  
+  redis: {
+    // Add Redis configuration not in parent
+    host: "%{REDIS_HOST|@{database.host}}",
+    port: 6379,
+    password: "%{REDIS_PASSWORD}",
+    database: 0,
+    cluster_mode: false
+  },
+  
+  logging: {
+    level: "%{LOG_LEVEL|warn}",
+    destinations: ["console", "file", "elasticsearch"],
+    file: {
+      path: "/var/log/@{app.name}.log",
+      rotation: "daily",
+      max_files: 30
+    },
+    elasticsearch: {
+      host: "%{ELASTICSEARCH_HOST}",
+      index: "@{app.name}-logs"
+    }
+  },
+  
+  security: {
+    session: {
+      secret: "%{SESSION_SECRET}",
+      cookie: {
+        secure: true, // Override parent for production
+        domain: "%{COOKIE_DOMAIN|.example.com}",
+        sameSite: "strict"
+      }
+    },
+    rate_limiting: {
+      enabled: true,
+      window_ms: 60000,
+      max_requests: 100,
+      skip_successful: true
+    }
+  },
+  
+  features: {
+    // Override parent feature flags for production
+    email_verification: true,
+    two_factor_auth: true,
+    audit_logging: true,
+    advanced_analytics: true
+  },
+  
+  monitoring: {
+    // Production-specific monitoring
+    apm: {
+      enabled: true,
+      service_name: "@{app.name}",
+      environment: "production"
+    },
+    health_checks: {
+      enabled: true,
+      endpoint: "/health",
+      interval: 30000
+    },
+    metrics: {
+      enabled: true,
+      prefix: "@{app.name}.",
+      tags: {
+        environment: "production",
+        version: "@{app.version}"
+      }
+    }
+  },
+  
+  external_apis: {
+    payment: {
+      provider: "stripe",
+      public_key: "%{STRIPE_PUBLIC_KEY}",
+      secret_key: "%{STRIPE_SECRET_KEY}",
+      webhook_secret: "%{STRIPE_WEBHOOK_SECRET}"
+    },
+    email: {
+      provider: "sendgrid",
+      api_key: "%{SENDGRID_API_KEY}",
+      from_email: "noreply@%{DOMAIN|example.com}",
+      from_name: "@{app.name}"
+    }
+  }
+}
