@@ -58,9 +58,9 @@
     "@types/node": "^24.3.0",
     "@typescript-eslint/eslint-plugin": "^8.41.0",
     "@typescript-eslint/parser": "^8.41.0",
-    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/coverage-v8": "^3.2.4",
     "typescript": "^5.9.2",
-    "vitest": "^2.1.8",
+    "vitest": "^3.2.4",
     "wavy": "^1.0.4"
   },
   "engines": {

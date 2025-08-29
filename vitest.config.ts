@@ -28,6 +28,8 @@ export default defineConfig({
         'src/**/*.spec.ts',
         'src/types.ts' // Type definitions don't need coverage
       ],
+      // V8 3.2.4: ignoreEmptyLines now defaults to true for cleaner reports
+      ignoreEmptyLines: true,
       // Coverage thresholds
       thresholds: {
         global: {
