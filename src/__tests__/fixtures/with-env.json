@@ -1,0 +1,11 @@
+{
+  "database": {
+    "host": "%{DB_HOST|localhost}",
+    "port": "%{DB_PORT|5432}",
+    "name": "%{DB_NAME|testdb}"
+  },
+  "api": {
+    "key": "%{API_KEY}",
+    "url": "%{API_URL|https://api.example.com}"
+  }
+}

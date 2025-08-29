@@ -25,11 +25,13 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "test": "mocha --require tsx --reporter spec 'test/**/*.test.ts'",
-    "test:js": "nyc mocha --reporter spec",
+    "test": "mocha --require tsx --reporter spec 'src/**/__tests__/*.test.ts'",
+    "test:watch": "mocha --require tsx --reporter spec --watch 'src/**/__tests__/*.test.ts'",
+    "test:coverage": "nyc --reporter=html --reporter=text mocha --require tsx 'src/**/__tests__/*.test.ts'",
+    "test:old": "nyc mocha --reporter spec",
     "typecheck": "tsc --noEmit",
     "release": "standard-version",
-    "clean": "rm -rf dist dist-test",
+    "clean": "rm -rf dist dist-test coverage .nyc_output",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -66,5 +68,20 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "analyze": "true"
+  "analyze": "true",
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/__tests__/**",
+      "dist/**",
+      "test/**"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "all": true
+  }
 }
