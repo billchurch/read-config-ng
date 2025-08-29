@@ -1,5 +1,5 @@
 # read-config-ng
-[![Build Status](https://travis-ci.com/billchurch/read-config-ng.svg?branch=main)](https://travis-ci.com/billchurch/read-config-ng) [![NPM](https://img.shields.io/npm/v/read-config-ng)](https://www.npmjs.com/package/read-config-ng)
+[![NPM](https://img.shields.io/npm/v/read-config-ng)](https://www.npmjs.com/package/read-config-ng)
 <!-- [![Coverage Status](https://coveralls.io/repos/github/billchurch/read-config-ng/badge.svg)](https://coveralls.io/github/billchurch/read-config-ng) -->
 ## About original package
 The original author, Paweł Mendelski <pawel.mendelski@coditorium.com>, has appeared to have abandonded this package. I took the last published version (1.6.0) and updated it to resolve some vulnerabilities in a few dependancies.
