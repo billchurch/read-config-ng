@@ -6,7 +6,14 @@
   "name": "read-config-ng",
   "version": "3.0.7",
   "description": "Multi format configuration loader",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,9 +23,14 @@
     "url": "https://github.com/billchurch/read-config-ng/issues"
   },
   "scripts": {
-    "test": "nyc mocha --reporter spec",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "mocha --require tsx --reporter spec 'test/**/*.test.ts'",
+    "test:js": "nyc mocha --reporter spec",
+    "typecheck": "tsc --noEmit",
     "release": "standard-version",
-    "clean": "gulp clean"
+    "clean": "rm -rf dist dist-test",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "coditorium",
