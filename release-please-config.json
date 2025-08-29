@@ -1,6 +1,7 @@
 {
   "bootstrap-sha": "a704304",
   "release-type": "node",
+  "include-component-in-tag": false,
   "packages": {
     ".": {
       "changelog-path": "CHANGELOG.md",
@@ -9,6 +10,7 @@
       "bump-patch-for-minor-pre-major": false,
       "draft": false,
       "prerelease": false,
+      "include-component-in-tag": false,
       "changelog-sections": [
         { "type": "feat", "section": "Features", "hidden": false },
         { "type": "fix", "section": "Bug Fixes", "hidden": false },
