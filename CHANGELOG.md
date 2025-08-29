@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.2](https://github.com/billchurch/read-config-ng/compare/v4.0.1...v4.0.2) (2025-08-29)
+
+
+### Bug Fixes
+
+* resolve ESM import issues in Node.js ([#28](https://github.com/billchurch/read-config-ng/issues/28)) ([4e23fd2](https://github.com/billchurch/read-config-ng/commit/4e23fd2a6324faff1b2d14b0366a4ca85bbbf40a))
+* resolve ESM import issues in Node.js ([#28](https://github.com/billchurch/read-config-ng/issues/28)) ([0a2f0e9](https://github.com/billchurch/read-config-ng/commit/0a2f0e9d7c05c9bf94c08fe4960ff2d0e4a2bd83))
+
 ## [4.0.1](https://github.com/billchurch/read-config-ng/compare/v4.0.0...v4.0.1) (2025-08-29)
 
 
