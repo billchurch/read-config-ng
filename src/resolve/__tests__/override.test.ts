@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { override } from '../override';
 
 describe('override', () => {
@@ -15,7 +15,7 @@ describe('override', () => {
     
     const result = override('CONFIG', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       host: 'production.com',
       port: 8080
     });
@@ -38,7 +38,7 @@ describe('override', () => {
     
     const result = override('CONFIG', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       database: {
         host: 'db.prod.com',
         port: 3306,
@@ -59,7 +59,7 @@ describe('override', () => {
     
     const result = override('CONFIG', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       existing: 'value',
       new: 'added',
       nested: {
@@ -80,7 +80,7 @@ describe('override', () => {
     
     const result = override('CONFIG', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       debug: true,
       verbose: false,
       enabled: true,
@@ -100,7 +100,7 @@ describe('override', () => {
     
     const result = override('CONFIG', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       int: 42,
       negative: -10,
       float: 3.14,
@@ -121,7 +121,7 @@ describe('override', () => {
     
     const result = override('CONFIG', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       a: null,
       b: undefined
     });
@@ -138,7 +138,7 @@ describe('override', () => {
     
     const result = override('CONFIG', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       obj: { a: 1, b: 2 },
       arr: [1, 2, 3],
       nested: { x: { y: 'z' } }
@@ -154,7 +154,7 @@ describe('override', () => {
     
     const result = override('CONFIG', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       invalid: '{invalid json}'
     });
   });
@@ -170,7 +170,7 @@ describe('override', () => {
     
     const result = override('CONFIG', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       a: 1,
       b: 2
     });
@@ -186,7 +186,7 @@ describe('override', () => {
     
     const result = override('CUSTOM', config, env);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       value: 'test'
     });
   });
@@ -199,10 +199,10 @@ describe('override', () => {
     };
     
     const result1 = override(false, config, env);
-    expect(result1).to.deep.equal({ a: 1 });
+    expect(result1).toEqual({ a: 1 });
     
     const result2 = override('', config, env);
-    expect(result2).to.deep.equal({ a: 1 });
+    expect(result2).toEqual({ a: 1 });
   });
   
   it('should handle undefined values in environment', () => {
@@ -212,8 +212,8 @@ describe('override', () => {
       CONFIG_b: undefined
     };
     
-    const result = override('CONFIG', config, env as any);
+    const result = override('CONFIG', config, env as Record<string, string | undefined>);
     
-    expect(result).to.deep.equal({ a: 1 });
+    expect(result).toEqual( { a: 1 });
   });
 });

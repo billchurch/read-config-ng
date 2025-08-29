@@ -1,0 +1,343 @@
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import * as path from 'path';
+import { sync as readConfigSync, async as readConfig } from '../read-config';
+import { ReadConfigError } from '../read-config-error';
+
+describe('Integration tests - Complex scenarios', () => {
+  const fixturesDir = path.join(__dirname, 'fixtures');
+
+  describe('Complex YAML configuration', () => {
+    const yamlPath = path.join(fixturesDir, 'complex-yaml.yml');
+
+    it('should load and resolve complex YAML with environment variables', async () => {
+      // Set test environment variables
+      const originalEnv = process.env;
+      process.env = {
+        ...originalEnv,
+        SERVER_HOST: 'production.example.com',
+        DB_PRIMARY_HOST: 'db-primary.example.com',
+        DB_NAME: 'complex_app_db',
+        DB_USER: 'app_user',
+        DB_PASSWORD: 'secure_password',
+        REDIS_HOST: 'redis.example.com',
+        LOG_LEVEL: 'debug',
+        NODE_ENV: 'production',
+        PAYMENT_GATEWAY_URL: 'https://api.payment.com',
+        PAYMENT_API_KEY: 'pk_test_12345'
+      };
+
+      try {
+        const config = await readConfig(yamlPath);
+
+        // Verify environment variable substitution
+        assert.equal(config.server.host, 'production.example.com');
+        assert.equal(config.database.primary.host, 'db-primary.example.com');
+        assert.equal(config.database.primary.name, 'complex_app_db');
+        assert.equal(config.database.primary.username, 'app_user');
+        assert.equal(config.database.primary.password, 'secure_password');
+        assert.equal(config.cache.redis.host, 'redis.example.com');
+        assert.equal(config.logging.level, 'debug');
+        assert.equal(config.app.environment, 'production');
+        assert.equal(config.external_services.payment_gateway.url, 'https://api.payment.com');
+        assert.equal(config.external_services.payment_gateway.api_key, 'pk_test_12345');
+
+        // Verify local variable resolution
+        assert.equal(config.database.replica.host, config.database.primary.host);
+        assert.equal(config.database.replica.port, config.database.primary.port);
+        assert.equal(config.database.replica.name, config.database.primary.name);
+        assert(config.logging.outputs[1].path.includes(config.app.name));
+
+        // Verify complex nested structures
+        assert.equal(config.features.rate_limiting.enabled, true);
+        assert.equal(config.features.rate_limiting.window, 60);
+        assert.equal(config.features.rate_limiting.max_requests, 1000);
+      } finally {
+        process.env = originalEnv;
+      }
+    });
+
+    it('should use default values when environment variables are not set', async () => {
+      const originalEnv = process.env;
+      // Clear relevant environment variables
+      const cleanEnv = { ...originalEnv };
+      delete cleanEnv.SERVER_HOST;
+      delete cleanEnv.DB_PRIMARY_HOST;
+      delete cleanEnv.LOG_LEVEL;
+      delete cleanEnv.NODE_ENV;
+      process.env = cleanEnv;
+
+      try {
+        const config = await readConfig(yamlPath);
+
+        // Verify default values are used
+        assert.equal(config.server.host, 'localhost');
+        assert.equal(config.database.primary.host, 'db1.example.com');
+        assert.equal(config.logging.level, 'info');
+        assert.equal(config.app.environment, 'development');
+        assert.equal(config.cache.redis.password, ''); // Empty default
+      } finally {
+        process.env = originalEnv;
+      }
+    });
+  });
+
+  describe('Complex Properties configuration', () => {
+    const propertiesPath = path.join(fixturesDir, 'complex-properties.properties');
+
+    it('should load and resolve complex properties with mixed variable types', async () => {
+      const originalEnv = process.env;
+      process.env = {
+        ...originalEnv,
+        NODE_ENV: 'production',
+        SERVER_HOST: 'prod-server.example.com',
+        DATABASE_HOST: 'prod-db.example.com',
+        DATABASE_PASSWORD: 'prod_db_password',
+        JWT_SECRET: 'super_secret_jwt_key',
+        STRIPE_SECRET_KEY: 'sk_live_12345',
+        SENTRY_DSN: 'https://sentry.io/project/123'
+      };
+
+      try {
+        const config = await readConfig(propertiesPath);
+
+        // Verify environment variables
+        assert.equal(config.app.environment, 'production');
+        assert.equal(config.server.host, 'prod-server.example.com');
+        assert.equal(config.database.host, 'prod-db.example.com');
+        assert.equal(config.database.password, 'prod_db_password');
+        assert.equal(config.auth.jwt.secret, 'super_secret_jwt_key');
+
+        // Verify local variable resolution  
+        assert.equal(config.database.name, config.app.name + '_db');
+        assert.equal(config.cache.redis.host, config.database.host);
+        assert(config.logging.file.path.includes(config.app.name));
+        assert.equal(config.email.from.name, config.app.name);
+
+        // Verify nested property structure
+        assert.equal(config.server.ssl.enabled, 'true');
+        assert.equal(config.database.pool.min, '2');
+        assert.equal(config.database.pool.max, '10');
+      } finally {
+        process.env = originalEnv;
+      }
+    });
+  });
+
+  describe('Hierarchical configuration with JSON5', () => {
+    const childPath = path.join(fixturesDir, 'hierarchical-child.json5');
+
+    it('should correctly merge parent and child configurations', async () => {
+      const originalEnv = process.env;
+      process.env = {
+        ...originalEnv,
+        PRODUCTION_HOST: 'app.example.com',
+        PORT: '8080',
+        DATABASE_HOST: 'production-db.example.com',
+        DATABASE_PASSWORD: 'prod_password',
+        SESSION_SECRET: 'production_session_secret',
+        STRIPE_PUBLIC_KEY: 'pk_live_production'
+      };
+
+      try {
+        const config = await readConfig(childPath);
+
+        // Verify parent values are inherited
+        assert.equal(config.app.name, 'hierarchical-app');
+        assert.equal(config.app.version, '3.0.0');
+        assert.equal(config.security.bcrypt_rounds, 12);
+        assert.equal(config.features.user_registration, true);
+
+        // Verify child values override parent
+        assert.equal(config.server.host, 'app.example.com');
+        assert.equal(config.server.port, '8080');
+        assert.equal(config.database.host, 'production-db.example.com');
+        assert.equal(config.logging.level, 'warn');
+        assert.equal(config.security.session.cookie.secure, true); // Overridden
+        assert.equal(config.features.email_verification, true); // Overridden
+        assert.equal(config.features.two_factor_auth, true); // Overridden
+
+        // Verify child-only properties exist
+        assert(config.redis);
+        assert.equal(config.redis.host, config.database.host);
+        assert(config.monitoring);
+        assert.equal(config.monitoring.apm.enabled, true);
+        assert(config.external_apis);
+        assert.equal(config.external_apis.payment.public_key, 'pk_live_production');
+
+        // Verify local variable resolution across hierarchy
+        assert.equal(config.database.name, config.app.name + '_prod');
+        assert.equal(config.monitoring.apm.service_name, config.app.name);
+        assert.equal(config.monitoring.metrics.tags.version, config.app.version);
+      } finally {
+        process.env = originalEnv;
+      }
+    });
+
+    it('should work synchronously with hierarchical configs', () => {
+      const originalEnv = process.env;
+      process.env = {
+        ...originalEnv,
+        PRODUCTION_HOST: 'sync.example.com',
+        SESSION_SECRET: 'sync_secret'
+      };
+
+      try {
+        const config = readConfigSync(childPath);
+
+        // Basic hierarchy checks
+        assert.equal(config.app.name, 'hierarchical-app'); // From parent
+        assert.equal(config.server.host, 'sync.example.com'); // From child with env var
+        assert.equal(config.security.session.secret, 'sync_secret'); // Child env var
+        assert.equal(config.features.user_registration, true); // Parent
+        assert.equal(config.features.email_verification, true); // Child override
+      } finally {
+        process.env = originalEnv;
+      }
+    });
+  });
+
+  describe('Error handling in complex scenarios', () => {
+    it('should handle missing parent file gracefully', async () => {
+      const invalidChildPath = path.join(fixturesDir, 'invalid-child.json5');
+      
+      // Create a temp file that references non-existent parent
+      const fs = require('fs');
+      const tempContent = JSON.stringify({
+        __parent: './non-existent-parent.json5',
+        test: 'value'
+      });
+      fs.writeFileSync(invalidChildPath, tempContent);
+
+      try {
+        await assert.rejects(
+          () => readConfig(invalidChildPath),
+          (error: ReadConfigError) => {
+            assert(error instanceof ReadConfigError);
+            return true;
+          }
+        );
+      } finally {
+        // Cleanup
+        try {
+          fs.unlinkSync(invalidChildPath);
+        } catch {
+          // Ignore cleanup errors
+        }
+      }
+    });
+
+    it('should handle malformed configuration files', async () => {
+      const malformedPath = path.join(fixturesDir, 'malformed.json');
+      
+      const fs = require('fs');
+      fs.writeFileSync(malformedPath, '{ "key": "value", invalid json }');
+
+      try {
+        await assert.rejects(
+          () => readConfig(malformedPath),
+          (error: ReadConfigError) => {
+            assert.equal(error.code, 'PARSE_ERROR');
+            return true;
+          }
+        );
+      } finally {
+        try {
+          fs.unlinkSync(malformedPath);
+        } catch {
+          // Ignore cleanup errors
+        }
+      }
+    });
+
+    it('should handle circular parent references', async () => {
+      const fs = require('fs');
+      const circularParent = path.join(fixturesDir, 'circular-parent.json');
+      const circularChild = path.join(fixturesDir, 'circular-child.json');
+      
+      fs.writeFileSync(circularParent, JSON.stringify({
+        __parent: './circular-child.json',
+        parent: 'value'
+      }));
+      
+      fs.writeFileSync(circularChild, JSON.stringify({
+        __parent: './circular-parent.json',
+        child: 'value'
+      }));
+
+      try {
+        // This should detect the circular reference and handle it appropriately
+        const result = await readConfig(circularChild);
+        // If it doesn't throw, verify it handled the situation gracefully
+        assert(result);
+      } catch (error) {
+        // Or it should throw a specific error about circular references
+        assert(error instanceof Error);
+      } finally {
+        try {
+          fs.unlinkSync(circularParent);
+          fs.unlinkSync(circularChild);
+        } catch {
+          // Ignore cleanup errors
+        }
+      }
+    });
+  });
+
+  describe('Environment variable override scenarios', () => {
+    it('should handle CONFIG_ overrides with complex structures', async () => {
+      const originalEnv = process.env;
+      process.env = {
+        ...originalEnv,
+        // Test CONFIG_ overrides
+        CONFIG_server_port: '9999',
+        CONFIG_database_primary_host: 'override-db.example.com',
+        CONFIG_features_authentication: 'false',
+        CONFIG_app_debug: 'true'
+      };
+
+      try {
+        const yamlPath = path.join(fixturesDir, 'complex-yaml.yml');
+        const config = await readConfig(yamlPath);
+
+        // Verify CONFIG_ overrides took precedence
+        assert.equal(config.server.port, 9999); // Converted to number
+        assert.equal(config.database.primary.host, 'override-db.example.com');
+        assert.equal(config.features.authentication, false); // Converted to boolean
+        assert.equal(config.app.debug, true); // Converted to boolean
+      } finally {
+        process.env = originalEnv;
+      }
+    });
+  });
+
+  describe('Multi-format consistency', () => {
+    it('should handle similar configurations across different formats', async () => {
+      // This test would verify that the same logical configuration
+      // works consistently across JSON5, YAML, and Properties formats
+      
+      const yamlPath = path.join(fixturesDir, 'complex-yaml.yml');
+      const propertiesPath = path.join(fixturesDir, 'complex-properties.properties');
+
+      const originalEnv = process.env;
+      process.env = {
+        ...originalEnv,
+        NODE_ENV: 'test',
+        LOG_LEVEL: 'debug',
+        SERVER_HOST: 'test.example.com'
+      };
+
+      try {
+        const yamlConfig = await readConfig(yamlPath);
+        const propertiesConfig = await readConfig(propertiesPath);
+
+        // Verify common elements work similarly
+        assert.equal(yamlConfig.app.environment, propertiesConfig.app.environment);
+        assert.equal(yamlConfig.logging.level, propertiesConfig.logging.level);
+        assert.equal(yamlConfig.server.host, propertiesConfig.server.host);
+      } finally {
+        process.env = originalEnv;
+      }
+    });
+  });
+});

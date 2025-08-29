@@ -18,8 +18,6 @@ jobs:
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: node
-          bootstrap-sha: 566cc2d  # commit after v3.0.7 tag
 
       # The following steps only run if a release was created
       - uses: actions/checkout@v4

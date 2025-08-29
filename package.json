@@ -6,6 +6,7 @@
   "name": "read-config-ng",
   "version": "3.0.7",
   "description": "Multi format configuration loader",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -25,13 +26,14 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "test": "mocha --require tsx --reporter spec 'src/**/__tests__/*.test.ts'",
-    "test:watch": "mocha --require tsx --reporter spec --watch 'src/**/__tests__/*.test.ts'",
-    "test:coverage": "nyc --reporter=html --reporter=text mocha --require tsx 'src/**/__tests__/*.test.ts'",
-    "test:old": "nyc mocha --reporter spec",
+    "test": "vitest run",
+    "test:ci": "vitest run --reporter=dot",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "release": "standard-version",
-    "clean": "rm -rf dist dist-test coverage .nyc_output",
+    "lint": "eslint src --ext .ts,.js",
+    "lint:fix": "eslint src --ext .ts,.js --fix",
+    "clean": "rm -rf dist coverage",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -42,7 +44,7 @@
     "properties"
   ],
   "dependencies": {
-    "async": "^3.2.4",
+    "async": "^3.2.6",
     "js-yaml": "~4.1.0",
     "json5": "^2.2.3",
     "lodash": "^4.17.21",
@@ -50,38 +52,19 @@
     "require-directory": "^2.1.1"
   },
   "devDependencies": {
-    "@types/chai": "^5.2.2",
+    "@eslint/js": "^9.34.0",
     "@types/js-yaml": "^4.0.9",
     "@types/lodash": "^4.17.20",
-    "@types/mocha": "^10.0.10",
     "@types/node": "^24.3.0",
     "@typescript-eslint/eslint-plugin": "^8.41.0",
     "@typescript-eslint/parser": "^8.41.0",
-    "chai": "^4.3.7",
-    "mocha": "^10.2.0",
-    "nyc": "^15.1.0",
-    "standard-version": "^9.5.0",
-    "tsx": "^4.20.5",
+    "@vitest/coverage-v8": "^2.1.8",
     "typescript": "^5.9.2",
+    "vitest": "^2.1.8",
     "wavy": "^1.0.4"
   },
   "engines": {
     "node": ">=22.0.0"
   },
-  "analyze": "true",
-  "nyc": {
-    "extension": [
-      ".ts"
-    ],
-    "exclude": [
-      "**/__tests__/**",
-      "dist/**",
-      "test/**"
-    ],
-    "reporter": [
-      "text",
-      "html"
-    ],
-    "all": true
-  }
+  "analyze": "true"
 }

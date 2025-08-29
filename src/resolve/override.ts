@@ -1,4 +1,4 @@
-import { ConfigObject } from '../types';
+import { ConfigObject, ConfigValue } from '../types';
 import { put } from './deep';
 
 const PROPERTY_SEPARATOR = '_';
@@ -48,7 +48,7 @@ export function override(
 /**
  * Cast environment variable string to appropriate type
  */
-function castEnvironmentValue(value: string): any {
+function castEnvironmentValue(value: string): ConfigValue {
   const trimmed = value.trim();
   
   // Boolean values

@@ -1,15 +1,15 @@
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { mergeConfigs } from '../merge-configs';
 
 describe('merge-configs', () => {
   it('should return empty object for empty array', () => {
     const result = mergeConfigs([]);
-    expect(result).to.deep.equal({});
+    expect(result).toEqual({});
   });
   
   it('should return empty object for null/undefined', () => {
-    const result = mergeConfigs(null as any);
-    expect(result).to.deep.equal({});
+    const result = mergeConfigs(null as never);
+    expect(result).toEqual({});
   });
   
   it('should merge multiple configs', () => {
@@ -21,7 +21,7 @@ describe('merge-configs', () => {
     
     const result = mergeConfigs(configs);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       a: 1,
       b: 3,
       c: 5,
@@ -38,7 +38,7 @@ describe('merge-configs', () => {
     
     const result = mergeConfigs(configs);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       arr: [6], // Last array wins
       obj: {
         a: 3, // Overridden
@@ -72,7 +72,7 @@ describe('merge-configs', () => {
     
     const result = mergeConfigs(configs);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       level1: {
         level2: {
           a: 1,
@@ -93,7 +93,7 @@ describe('merge-configs', () => {
     
     const result = mergeConfigs(configs);
     
-    expect(result).to.deep.equal({
+    expect(result).toEqual( {
       a: 2,
       b: 3,
       c: null
