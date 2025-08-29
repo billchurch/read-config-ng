@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.8](https://github.com/billchurch/read-config-ng/compare/v3.0.7...v3.0.8) (2025-08-29)
+
+
+### Continuous Integration
+
+* add GitHub Actions workflows ([cd4d556](https://github.com/billchurch/read-config-ng/commit/cd4d55622f2515d68e2166ad184c1d6078affef7))
+* add release-please configuration files ([ad3eae2](https://github.com/billchurch/read-config-ng/commit/ad3eae2bf3befc2a8261c82bd52751db3076c954))
+* fix release-please tag naming configuration ([4879e9b](https://github.com/billchurch/read-config-ng/commit/4879e9b20c660ddedf5cb5f12b8cc2a3c0a0e676))
+* set bootstrap SHA to last release (v3.0.7) ([233da43](https://github.com/billchurch/read-config-ng/commit/233da4361571c51ced3a7a94f748e2dc4f9404af))
+* update bootstrap SHA to reduce changelog noise ([86a9b25](https://github.com/billchurch/read-config-ng/commit/86a9b25294169c0bf7d81fa22f44246488d6fee5))
+
 ### [3.0.7](https://github.com/billchurch/read-config-ng/compare/v3.0.6...v3.0.7) (2023-08-22)
 
 ### [3.0.6](https://github.com/billchurch/read-config-ng/compare/v3.0.5...v3.0.6) (2023-02-14)
