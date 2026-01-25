@@ -47,7 +47,7 @@
     "async": "^3.2.6",
     "js-yaml": "~4.1.0",
     "json5": "^2.2.3",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "properties": "~1.2.1",
     "require-directory": "^2.1.1"
   },
